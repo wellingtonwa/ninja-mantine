@@ -8,7 +8,7 @@ import {
   MantineProvider,
   Navbar,
   Text
-} from '@mantine/core'
+} from '@mantine/core';
 import { DatabaseImport, Home, Sword } from 'tabler-icons-react';
 import MenuItem from "./component/MenuItem";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
