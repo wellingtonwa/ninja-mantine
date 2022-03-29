@@ -1,33 +1,13 @@
 import React, {useEffect, useState} from "react";
-import { Button, Grid, Group, Text } from "@mantine/core";
+import {Grid} from "@mantine/core";
 import IssueCard from "../component/IssueCard";
-import {getDataBases, abrirPasta, getMantisInfo} from "../service/dashboard.service";
-
-interface DatabaseProps {
-  dbname: string;
-}
-
-interface InfoMantisProps {
-  categoria: string;
-  codigoCliente: string;
-  complexidade: string;
-  crReact: string;
-  dataEnvio: string;
-  descricao: string;
-  estado: string;
-  informacaoAdicional: string;
-  numeroCaso: string;
-  prioridade: string;
-  projeto: string;
-  resumo: string;
-  ultimaAtualizacao: string;
-  versao: string;
-}
+import {abrirPasta, getDataBases, getMantisInfo} from "../service/dashboard.service";
+import Database from "../model/Database";
 
 const Dashboard = () => {
 
   const [bancos, setBancos] = useState([] as Array<any>);
-  const [infoMantis, setInfoMantis] = useState([] as Array<InfoMantisProps>)
+  const [infoMantis, setInfoMantis] = useState([] as Array<any>)
   const REGEX_NUMEROCASO = /(?<=.*)[0-9]{5}$/g;
 
   useEffect(() => {
@@ -38,9 +18,10 @@ const Dashboard = () => {
     const numeroCasos = bancos.filter(it => REGEX_NUMEROCASO.test(it.dbname)).map(it => it.dbname.match(REGEX_NUMEROCASO)).filter(
         it => it.length > 0).map(it => it[0]);
     if (numeroCasos.length > 0) {
-      console.log(numeroCasos);
-      getMantisInfo(numeroCasos).then(result =>
-          setInfoMantis(result.data)
+      getMantisInfo(numeroCasos).then(result => {
+            console.log(result.data);
+            setInfoMantis(result.data)
+          }
       );
     }
   }, [bancos]);
@@ -51,6 +32,11 @@ const Dashboard = () => {
     })
   }
 
+  const getDadosCaso = (database: Database) => {
+    const numeroCaso: any = getNumeroCaso(database);
+    return numeroCaso && infoMantis[numeroCaso];
+  }
+
   const griColTheme = (theme: any) => ({
     backgroundColor: theme.colors.gray[0],
     '&:hover': {
@@ -58,24 +44,24 @@ const Dashboard = () => {
     },
   });
 
-  const callAbrirPasta = (item: DatabaseProps, __: any) => {
-    let numeroCaso = item && item.dbname && REGEX_NUMEROCASO.test(item.dbname) && item.dbname.match(REGEX_NUMEROCASO);
+  function getNumeroCaso(item: Database) {
+    const numeroCaso = item && item.dbname && REGEX_NUMEROCASO.test(item.dbname) && item.dbname.match(REGEX_NUMEROCASO);
+    return numeroCaso ? numeroCaso[0] : null;
+  }
+
+  const callAbrirPasta = (item: Database) => {
+    let numeroCaso = getNumeroCaso(item);
     if (numeroCaso) {
-      abrirPasta(numeroCaso[0]);
+      abrirPasta(numeroCaso);
     }
   }
 
   const buildIssueCard = () => {
     return bancos && bancos.map((banco, idx) => {
-      return <Grid.Col span={4} sx={griColTheme} children={<IssueCard key={idx}>
-            <Text weight={500} size="lg">{banco.dbname}</Text>
-            <Group direction="row" position="apart" sx={(theme) =>({
-              marginTop: 10,
-            })}>
-              <Button color="red">Apagar</Button>
-              <Button onClick={callAbrirPasta.bind(null, banco)}>Abrir Pasta</Button>
-            </Group>
-          </IssueCard>}/>;
+          return <Grid.Col sx={griColTheme} sm={12} md={6} xl={4}
+                           children={<IssueCard key={idx} database={banco}
+                                                openFolderAction={callAbrirPasta}
+                                                informacaoMantis={getDadosCaso(banco)}/>}/>;
         }
     )
   }
@@ -84,7 +70,7 @@ const Dashboard = () => {
       <Grid>
         {buildIssueCard()}
       </Grid>
-)
+  )
 }
 
 export default Dashboard;
