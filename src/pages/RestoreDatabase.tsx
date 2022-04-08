@@ -12,7 +12,7 @@ const RestoreDatabase = () => {
     },
     validate: (values) => ({
       'nome-banco': !!!values['nome-banco'] ? "Informe o nome do banco" : null,
-      link: !!!values.link ? "Informe o link" :  null,
+      link: !!!values.link ? "Informe o link" : null,
     })
   });
 
@@ -21,33 +21,27 @@ const RestoreDatabase = () => {
   };
 
   return (
-      <div>
-        <Grid justify={"space-around"}>
-          <Grid.Col span={3} sm={12}>
-            <Paper shadow="xl" style={{minHeight: 350}}>
-              <Container fluid={true}>
-                <Center>
-                  <Title order={3}>
-                    Restaurar Base de Dados
-                  </Title>
-                </Center>
-                <Space h="lg"/>
-                <form onSubmit={form.onSubmit(handleSubmit)}>
-                <TextInput size="md" placeholder="Nome do banco"
-                    {...form.getInputProps('nome-banco')}/>
-                <Space h="lg"/>
-                <TextInput size="md" placeholder="Link para o backup"
+      <Paper shadow="xl" p={10} style={{minHeight: 350}}>
+        <Container fluid={true}>
+          <Center>
+            <Title order={3}>
+              Restaurar Base de Dados
+            </Title>
+          </Center>
+          <Space h="lg"/>
+          <form onSubmit={form.onSubmit(handleSubmit)}>
+            <TextInput size="md" placeholder="Nome do banco"
+                       {...form.getInputProps('nome-banco')}/>
+            <Space h="lg"/>
+            <TextInput size="md" placeholder="Link para o backup"
                        {...form.getInputProps('link')}/>
-                <Space h="lg"/>
-                <Button size="lg" type="submit">
-                  Salvar
-                </Button>
-                </form>
-              </Container>
-            </Paper>
-          </Grid.Col>
-        </Grid>
-      </div>
+            <Space h="lg"/>
+            <Button size="lg" type="submit">
+              Salvar
+            </Button>
+          </form>
+        </Container>
+      </Paper>
   );
 }
 
