@@ -16,24 +16,28 @@ const Dashboard = () => {
   const [selectedDatabase, setSelectedDatabase] = useState({} as Database);
 
   useEffect(() => {
-    getBancos();
-  }, []);
+        getBancos();
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []);
 
 
   useEffect(() => {
-    const numeroCasos = bancos.filter(it => it.dbname.match(REGEX_NUMEROCASO)).map(it => it.dbname.match(REGEX_NUMEROCASO))
-    .filter(it => it.length > 0).map(it => it[0]);
+        const numeroCasos = bancos.filter(it => it.dbname.match(REGEX_NUMEROCASO)).map(it => it.dbname.match(REGEX_NUMEROCASO))
+        .filter(it => it.length > 0).map(it => it[0]);
 
-    if (numeroCasos.length > 0) {
-      getMantisInfo(numeroCasos).then(result => {
-            setInfoMantis(result.data)
+        if (numeroCasos.length > 0) {
+          getMantisInfo(numeroCasos).then(result => {
+                setInfoMantis(result.data)
+                loadingDataHandler.close();
+              }
+          ).catch(reason => {
             loadingDataHandler.close();
-          }
-      ).catch(reason => {
-        loadingDataHandler.close();
-      });
-    }
-  }, [bancos]);
+          });
+        }
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [bancos]);
 
   const getBancos = async () => {
     loadingDataHandler.open();
