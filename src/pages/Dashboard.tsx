@@ -4,7 +4,7 @@ import IssueCard from "../component/IssueCard";
 import {abrirPasta, apagarBanco, getDataBases, getMantisInfo} from "../service/dashboard.service";
 import Database from "../model/Database";
 import QuestionModal from "../component/QuestionModal";
-import {useClipboard, useDisclosure} from "@mantine/hooks";
+import {useDisclosure} from "@mantine/hooks";
 
 const REGEX_NUMEROCASO = /(?<=.*)\d{5}$/g;
 const Dashboard = () => {
