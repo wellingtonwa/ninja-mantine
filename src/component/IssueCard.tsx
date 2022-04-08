@@ -20,8 +20,32 @@ const IssueCard = (props: IssueCardProps) => {
   const {database, informacaoMantis, openFolderAction, dropDatabaseAction} = props;
   const clipboard = useClipboard({timeout: 500});
 
+  const paperStyle = (theme: any, estado: string | undefined) => ({
+      backgroundColor: getIssueStateColor(estado)
+  });
+
+    const getIssueStateColor = (estado: string | undefined) => {
+        switch (estado) {
+            case 'resolvido':
+            case 'fechado':
+                return '#D4EFDF';
+            case 'aguardando code review':
+                return '#F2D7D5';
+            case 'desenvolvimento':
+                return '#F9E79F';
+            case 'retorno':
+                return '#E8DAEF';
+            case 'aguardando teste':
+                return '#7FB3D5';
+            case 'atribuído':
+                return '#D6EAF8';
+            default:
+                return '#EBF5FB';
+        }
+    }
+
   return (
-      <Paper shadow="xl" p="md">
+      <Paper shadow="xl" p="md" sx={paperStyle(null, informacaoMantis?.estado)} >
         <Group spacing="xs">
           <Title order={3}>{database.dbname}</Title>
           <ActionIcon component={Clipboard} onClick={() => clipboard.copy(database.dbname)}/>

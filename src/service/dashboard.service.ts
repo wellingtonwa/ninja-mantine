@@ -22,3 +22,11 @@ export const apagarBanco = (dbname: string) => {
   dados.nome_banco[dbname] = true;
   return api.post('/apagar-db/apagar', dados);
 }
+
+export const findArquivoDownload = ()  => {
+  return api.get('/limpar-pasta');
+}
+
+export const apagarArquivoDownload = ()  => {
+  return api.post('/limpar-pasta');
+}

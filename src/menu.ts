@@ -1,4 +1,4 @@
-import { Home, DatabaseImport } from 'tabler-icons-react'
+import { Home, DatabaseImport, ClearAll } from 'tabler-icons-react'
 
 const menu = [
   {
@@ -10,7 +10,12 @@ const menu = [
     label: "Restaurar Base",
     path: "/restore",
     icon: DatabaseImport
-  }
+  },
+  {
+    label: 'Limpar pasta download',
+    path: '/limpar-pasta',
+    icon: ClearAll
+  },
 ]
 
 export default menu;
