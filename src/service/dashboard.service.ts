@@ -1,4 +1,5 @@
 import api from "../utils/AxiosTemplate";
+import RestoreDatabaseForm from "../model/RestoreDatabaseForm";
 
 export const getDataBases = () => {
   return api.get("/rodar-sql/bancos");
@@ -10,4 +11,14 @@ export const abrirPasta = (numero_caso: string) => {
 
 export const getMantisInfo = (numeroCasos: Array<string>) => {
   return api.post('/mantis', { issue_number: numeroCasos });
+}
+
+export const restaurarLink = (dados: RestoreDatabaseForm) => {
+  return api.post('/restaurar-link', dados);
+}
+
+export const apagarBanco = (dbname: string) => {
+  let dados = {nome_banco: {}} as any;
+  dados.nome_banco[dbname] = true;
+  return api.post('/apagar-db/apagar', dados);
 }

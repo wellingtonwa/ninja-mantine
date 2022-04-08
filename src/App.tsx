@@ -1,23 +1,53 @@
-import React, {ReactNode} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {
   ActionIcon,
-  AppShell,
+  AppShell, Button,
   Group,
   Header,
   MantineProvider,
-  Navbar,
-  Text
+  Navbar, Paper, Space,
+  Text, Textarea
 } from '@mantine/core';
-import { DatabaseImport, Home, Sword } from 'tabler-icons-react';
+import { Sword } from 'tabler-icons-react';
 import MenuItem from "./component/MenuItem";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import rotas from "./routes";
 import menu from "./menu";
+import {io} from "socket.io-client";
 
+
+function appShellTheme() {
+  return (theme: any) => ({
+    main: {backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1]},
+  });
+}
 
 function App() {
+
+  const [socket, setSocket] = useState(undefined as any);
+  const [texto, setTexto] = useState("");
+
+  useEffect(() => {
+    setSocket(io("http://localhost:5000"));
+  }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("db restore", (msg: any) => {
+        log(msg);
+      });
+    }
+  }, [socket])
+
+  const log = (txt: string) => {
+    setTexto(prevState => txt + "\n" + prevState);
+  }
+
+  const limparMensagens = () => {
+    setTexto("");
+  }
 
   const doSomething = (component: any) => {
     //posting arg1 as an example of whatever you are wanting to do.
@@ -59,10 +89,18 @@ function App() {
             navbar={<Navbar width={{ base: 300 }} p="xs">
               {getMenus()}
             </Navbar>}
+            styles={appShellTheme()}
         >
           <Routes>
             {getRoutes()}
           </Routes>
+          <Space h="lg"/>
+          <Paper p={10}>
+            <Group direction={"column"} grow>
+            <Textarea value={texto} label="Mensagens:" size="md" minRows={6} maxRows={6}/>
+              <Button onClick={limparMensagens}>Limpar mensagens</Button>
+            </Group>
+          </Paper>
         </AppShell>
       </MantineProvider>
     </BrowserRouter>
