@@ -94,6 +94,7 @@ const RestoreDatabase = () => {
 
     const limparArquivo = () => {
         setArquivo(undefined);
+        formArquivo.setFieldValue('arquivo', undefined);
     }
 
     const handleSubmit = (values: any) => {
