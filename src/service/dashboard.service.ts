@@ -20,7 +20,7 @@ export const restaurarLink = (dados: RestoreDatabaseForm) => {
 
 export const restaurarArquivo = (dados: RestoreFileForm) => {
   var formData = new FormData();
-  formData.append("informar_nome", Boolean(dados.informar_nome).toString());
+  dados.informar_nome && formData.append("informar_nome", Boolean(dados.informar_nome).toString());
   formData.append("nome-banco", dados['nome-banco']);
   if (dados.arquivo) {
     console.log("Setando arquivo");

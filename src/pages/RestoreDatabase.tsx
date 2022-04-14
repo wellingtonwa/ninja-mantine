@@ -5,7 +5,7 @@ import {
     Checkbox,
     Container,
     Group,
-    MantineTheme,
+    MantineTheme, Notification,
     Paper,
     Space,
     Tabs,
@@ -75,10 +75,7 @@ const RestoreDatabase = () => {
             <ImageUploadIcon status={status} style={{color: getIconColor(status, theme)}} size={80}/>
             <div>
                 <Text size="xl" inline>
-                    Drag images here or click to select files
-                </Text>
-                <Text size="sm" color="dimmed" inline mt={7}>
-                    Attach as many files as you like, each file should not exceed 5mb
+                    Arraste o arquivo para cá
                 </Text>
             </div>
         </Group>
@@ -153,6 +150,10 @@ const RestoreDatabase = () => {
                             >
                                 {(status) => dropzoneChildren(status, theme)}
                             </Dropzone>}
+
+                            {formArquivo.errors.arquivo && <Notification icon={<X size={18} />} color="red" disallowClose>
+                                Informe o arquivo que deseja restaurar.
+                            </Notification>}
                             <Space h="lg"/>
                             {arquivo && <SelectedFile/>}
                             <Checkbox size="md" placeholder="nome-banco" label="Informar nome do banco"
