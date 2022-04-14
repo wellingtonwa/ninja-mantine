@@ -1,5 +1,6 @@
 import api from "../utils/AxiosTemplate";
-import RestoreDatabaseForm from "../model/RestoreDatabaseForm";
+import RestoreDatabaseForm from "../model/restoreDatabaseForm";
+import RestoreFileForm from "../model/restoreFileForm";
 
 export const getDataBases = () => {
   return api.get("/rodar-sql/bancos");
@@ -15,6 +16,17 @@ export const getMantisInfo = (numeroCasos: Array<string>) => {
 
 export const restaurarLink = (dados: RestoreDatabaseForm) => {
   return api.post('/restaurar-link', dados);
+}
+
+export const restaurarArquivo = (dados: RestoreFileForm) => {
+  var formData = new FormData();
+  formData.append("informar_nome", Boolean(dados.informar_nome).toString());
+  formData.append("nome-banco", dados['nome-banco']);
+  if (dados.arquivo) {
+    console.log("Setando arquivo");
+    formData.append("arquivo", dados.arquivo, dados.arquivo.name);
+  }
+  return api.post('/restaurar', formData);
 }
 
 export const apagarBanco = (dbname: string) => {
