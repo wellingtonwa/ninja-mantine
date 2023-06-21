@@ -146,7 +146,7 @@ const RestoreDatabase = () => {
                             {!arquivo && <Dropzone
                                 onDrop={(files) => gravarArquivo(files)}
                                 onReject={(files) => console.log('rejected files', files)}
-                                maxSize={150 * 1024 ** 2}
+                                maxSize={650 * 1024 ** 2}
                             >
                                 {(status) => dropzoneChildren(status, theme)}
                             </Dropzone>}
